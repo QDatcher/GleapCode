@@ -5,6 +5,7 @@
 .popUp {
    
     font-size: 20px;
+    box-shadow: 0px 5px 10px 10px lightgrey;
 }
 .popUp h3 {
     display: block;
@@ -38,8 +39,9 @@
     align-items: center;
     justify-content: center;
     justify-items: center;
-    border: solid black 2px;
+    /*border: solid black 2px; */
     border-radius: 10px 10px 10px 10px;
+    box-shadow: 0px 5px 5px 5px grey;
     text-align: center;
     width: 30%;
     height: 80px;
