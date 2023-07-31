@@ -79,7 +79,7 @@ const getRandomNumber = () => {
                        popup.style.transform = 'translate(-50%, -50%)';
                        popup.style.padding = '20px';
                        popup.style.background = 'white';
-                       popup.style.border = '2px solid #333';
+                       //popup.style.border = '2px solid #333';
                        popup.style.borderRadius = '5px';
                        popup.classList.add("popUp");
                        //popup.textContent = `This is a pop-up for .`;

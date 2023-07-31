@@ -61,8 +61,36 @@
 
 .startButton {
     position: fixed;
-    height: 5%;
+    height: 4%;
     z-index: 99;
-    width: 5%
+    width: 4%
+    
+}
+
+.mainModule {
+    position: fixed;
+    box-shadow: 0px 5px 5px 5px grey;
+    border-radius: 2% 2% 2% 2%;
+    z-index: 9999;
+    height: 70%;
+    width: 30%;
+    left: 83%;
+    top: 40%;
+    background-color: teal;
+}
+
+.mainModExitButton {
+    font-size: 20px;
+    width: 10%;
+    height: 10%;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+}
+
+.logoHeader {
+ 
+    
+    width: 40%;
     
 }
