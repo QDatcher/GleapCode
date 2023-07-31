@@ -1,176 +1,63 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Tree with Canvas</title>
+</head>
 <body>
-    <canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3;">
-        Your browser does not support the HTML canvas tag.
-    </canvas>
-
+    <progress id="progress" value="0" max="120" style="width: 800px; display: block;"></progress>
+    <canvas id="canvas" width="800" height="600"></canvas>
     <script>
-        // get the canvas and the drawing context
-        var canvas = document.getElementById('myCanvas');
+        var canvas = document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
+        var progress = document.getElementById('progress');
 
-        // initial size of the tree
-        var treeHeight = 0;
-        var leafRadius = 0;
+        var len = 0;
 
-        // defining the flowers with their initial positions and size
-        var flowers = [
-            {xOffset: -20, yOffset: -10, radius: 0},
-            {xOffset: 20, yOffset: -10, radius: 0},
-            {xOffset: 0, yOffset: -30, radius: 0},
-            {xOffset: -10, yOffset: 15, radius: 0},
-            {xOffset: 10, yOffset: 15, radius: 0},
-        ];
-        var maxFlowerRadius = 3;
-
-        // progress bar parameters
-        var progressBarWidth = 200;
-        var progressBarHeight = 20;
-        var progressBarX = (canvas.width - progressBarWidth) / 2;
-        var progressBarY = 50;
-
-        // function to draw the sky
-        function drawSky() {
+        function drawTree(startX, startY, len, angle, branchWidth, color1, color2) {
             ctx.beginPath();
-            ctx.rect(0, 0, 500, 400);
-            ctx.fillStyle = 'skyblue';
-            ctx.fill();
-        }
-
-        // function to draw the ground
-        function drawGround() {
-            ctx.beginPath();
-            ctx.rect(0, 400, 500, 100);
-            ctx.fillStyle = 'saddlebrown';
-            ctx.fill();
-        }
-
-        // function to draw a star
-        function drawStar(cx, cy, spikes, outerRadius, innerRadius){
-            var rot = Math.PI / 2 * 3;
-            var x = cx;
-            var y = cy;
-            var step = Math.PI / spikes;
-
-            ctx.beginPath();
-            ctx.moveTo(cx, cy - outerRadius)
-
-            for (i = 0; i < spikes; i++) {
-                x = cx + Math.cos(rot) * outerRadius;
-                y = cy + Math.sin(rot) * outerRadius;
-                ctx.lineTo(x, y)
-                rot += step
-
-                x = cx + Math.cos(rot) * innerRadius;
-                y = cy + Math.sin(rot) * innerRadius;
-                ctx.lineTo(x, y)
-                rot += step
-            }
-
-            ctx.lineTo(cx, cy - outerRadius)
-            ctx.closePath();
-            ctx.lineWidth=5;
-            ctx.strokeStyle='pink';
+            ctx.save();
+            ctx.strokeStyle = color1;
+            ctx.fillStyle = color2;
+            ctx.lineWidth = branchWidth;
+            ctx.translate(startX, startY);
+            ctx.rotate(angle * Math.PI/180);
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, -len);
             ctx.stroke();
-            ctx.fillStyle='pink';
-            ctx.fill();
-        }
 
-        // function to draw the progress bar
-        // function to draw the progress bar
-function drawProgressBar() {
-    // calculate progress
-    var progress = (treeHeight / 160) + (leafRadius / 80) + (flowers[flowers.length - 1].radius / (2 * maxFlowerRadius)) / 3;
-
-    // draw the background
-    ctx.beginPath();
-    ctx.rect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
-    ctx.fillStyle = 'gray';
-    ctx.fill();
-
-    // draw the progress
-    ctx.beginPath();
-    ctx.rect(progressBarX, progressBarY, progress * progressBarWidth, progressBarHeight);
-    ctx.fillStyle = 'limegreen';
-    ctx.fill();
-}
-
-
-        // function to draw the flowers
-        function drawFlowers() {
-            flowers.forEach(function(flower, index) {
-                if (flower.radius > 0) {
-                    drawStar(255 + flower.xOffset, (400 - treeHeight) + flower.yOffset, 5, flower.radius, flower.radius / 2);
-                }
-
-                // start blooming the next flower once the previous one has reached half of its max size
-                if (index < flowers.length - 1 && flower.radius >= maxFlowerRadius / 2) {
-                    flowers[index + 1].radius += 0.05;
-                }
-            });
-        }
-
-        // function to draw the tree
-        function drawTree() {
-            // clear the previous frame
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // draw the sky
-            drawSky();
-
-            // draw the progress bar
-            drawProgressBar();
-            
-            // draw the ground
-            drawGround();
-            
-            // draw the trunk
-            ctx.beginPath();
-            ctx.moveTo(250, 400);
-            ctx.lineTo(260, 400);
-            ctx.lineTo(260, 400 - treeHeight);
-            ctx.lineTo(250, 400 - treeHeight);
-            ctx.closePath();
-            ctx.fillStyle = 'brown';
-            ctx.fill();
-
-            // draw the leaves
-            if (treeHeight > 10) { // start drawing leaves after the trunk has grown a bit
+            if(branchWidth < 1) {
                 ctx.beginPath();
-                ctx.arc(255, 400 - treeHeight, leafRadius, 0, Math.PI * 2, false);
-                ctx.fillStyle = 'green';
+                ctx.arc(0, -len, 10, 0, Math.PI/2);
                 ctx.fill();
+                ctx.restore();
+                return;
             }
-            
-            // draw the flowers
-            drawFlowers();
+
+            drawTree(0, -len, len*0.8, angle+15, branchWidth*0.8);
+            drawTree(0, -len, len*0.8, angle-15, branchWidth*0.8);
+
+            ctx.restore();
         }
 
-        // function to grow the tree and bloom the flowers
-        function growTree() {
-            if (treeHeight < 80) { // Modified maximum tree height to 80
-                treeHeight += 1.5; // Modified tree growth rate to 1.5
-            }
-            if (treeHeight > 10 && leafRadius < 40) { // Modified maximum leaf radius to 40
-                leafRadius += 0.75; // Modified leaf growth rate to 0.75
-            }
+        function animate() {
+            // Draw sky
+            ctx.fillStyle = 'skyblue';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            if (treeHeight >= 80 && leafRadius >= 40) {
-                flowers[0].radius += 0.05; // start blooming the first flower
-            }
-            
-            drawTree();
-            
-            // stop growing after the tree has reached a certain size and all the flowers have bloomed
-            if (treeHeight >= 80 && leafRadius >= 40 && flowers[flowers.length - 1].radius >= maxFlowerRadius) {
-                clearInterval(growthInterval);
+            // Draw ground
+            ctx.fillStyle = 'saddlebrown';
+            ctx.fillRect(0, canvas.height-80, canvas.width, 80);
+
+            len += 0.5;
+            var branchWidth = Math.max(len/6, 2); // Set a minimum branch width
+            if (len < 120 && len < canvas.height - 100) { // Stop the tree from growing beyond the canvas
+                drawTree(canvas.width/2, canvas.height-80, len, 0, branchWidth, 'brown', 'green');
+                progress.value = len;
+                requestAnimationFrame(animate);
             }
         }
 
-        // start growing the tree
-        var growthInterval = setInterval(growTree, 100);
+        animate();
     </script>
-
 </body>
 </html>
