@@ -57,7 +57,9 @@
 
         //Adding the close button and logic for it
         const exitButton = document.createElement('div')
-        exitButton.textContent = "X";
+        exitButton.innerHTML = `<svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22ZM8.96965 8.96967C9.26254 8.67678 9.73742 8.67678 10.0303 8.96967L12 10.9394L13.9696 8.96969C14.2625 8.6768 14.7374 8.6768 15.0303 8.96969C15.3232 9.26258 15.3232 9.73746 15.0303 10.0303L13.0606 12L15.0303 13.9697C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73744 15.3232 9.26256 15.3232 8.96967 15.0303C8.67678 14.7374 8.67678 14.2626 8.96967 13.9697L10.9393 12L8.96965 10.0303C8.67676 9.73744 8.67676 9.26256 8.96965 8.96967Z" fill="#1C274C"/>
+</svg>`;
         exitButton.classList.add('mainModExitButton');
 
         exitButton.addEventListener('click', function() {
@@ -70,7 +72,7 @@
         logoHeader.innerHTML = `<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 312.69 109.53">
   <defs>
     <style>
-      .cls-1 {
+      .cls-logo {
         fill: #18ee18;
       }
     </style>
@@ -85,16 +87,157 @@
         <path d="m288.03,26.21c-8.37,0-16.25,4.33-20.74,11.09l.05-2.78c0-3.83-.61-7.38-5.06-7.38-3.18,0-11.84,1.86-16.13,4.06-1.97,1.05-2.85,2.25-2.85,3.9,0,3.23,4.2,3.97,8,4.22.34.51,1.16,2.66,1.16,11.67v37.82c0,3.37,0,10.32-.81,11.2-3.91.31-7.66.94-7.66,4.34,0,3.63,4.74,5.18,15.85,5.18s18.28-.85,18.28-5.18c0-3.45-3.69-3.92-9.74-4.35-1.16-.99-1.16-8.63-1.16-11.2v-5.37c4.56,3.55,10.55,5.56,16.75,5.56,16.64,0,28.72-13.64,28.72-32.44s-10.14-30.35-24.66-30.35Zm9.09,32.67c0,13.41-5.93,21.74-15.47,21.74s-14.78-7.42-14.78-20.34c0-11.57,4.86-23.24,15.7-23.24,8.83,0,14.54,8.58,14.54,21.85Z"/>
       </g>
     </g>
-    <path class="cls-1" d="m48.84,20.75s-3.49,4.61-.3,12.42c3.19,7.81,9.62,7.07,9.62,7.07,0,0,2.11-6.12-.88-11.4-2.99-5.28-8.43-8.09-8.43-8.09Z"/>
-    <path class="cls-1" d="m30.17,65.3s6.45.82,12.26-6.66,1.5-13.33,1.5-13.33c0,0-7.14,1.37-10.61,7.25-3.47,5.87-3.15,12.75-3.15,12.75Z"/>
-    <path class="cls-1" d="m52.34,61.19s1.79-6.7-.39-10.71c-2.49-4.58-8.26-5.17-8.26-5.17,0,0-1.93,5.97.77,10.18,2.7,4.21,7.88,5.71,7.88,5.71Z"/>
+    <path class="cls-logo" d="m48.84,20.75s-3.49,4.61-.3,12.42c3.19,7.81,9.62,7.07,9.62,7.07,0,0,2.11-6.12-.88-11.4-2.99-5.28-8.43-8.09-8.43-8.09Z"/>
+    <path class="cls-logo" d="m30.17,65.3s6.45.82,12.26-6.66,1.5-13.33,1.5-13.33c0,0-7.14,1.37-10.61,7.25-3.47,5.87-3.15,12.75-3.15,12.75Z"/>
+    <path class="cls-logo" d="m52.34,61.19s1.79-6.7-.39-10.71c-2.49-4.58-8.26-5.17-8.26-5.17,0,0-1.93,5.97.77,10.18,2.7,4.21,7.88,5.71,7.88,5.71Z"/>
   </g>
 </svg>`;
         logoHeader.classList.add('logoHeader')
         mainModuleContainer.appendChild(logoHeader)
 
+        //Making the canvas display and map
+        //Container
+        const treesContainerContainer = document.createElement('div');
+        const treeConatiner = document.createElement('div');
+        const selectionConatiner = document.createElement('div');
+        const canvasTitle = document.createElement('h2')
+        canvasTitle.textConent = "Current Tree Progress / Tree Map";
+
+        mainModuleContainer.appendChild(treesContainerContainer)
+        treesContainerContainer.appendChild(canvasTitle)
+        treesContainerContainer.appendChild(selectionConatiner)
+
+
+
+        //Creating the div for canvas
+        const canvasContainer = document.createElement('div');
+        selectionConatiner. appendChild(canvasContainer)
+        //canvasContainer
+        canvasContainer.classList.add('canvasContainer')
+        const test2 = document.createElement('div');
+    document.body.appendChild(test2)
+           var parent = document.createElement('div');
+        parent.style.width = '100%';
+        parent.style.height = '100vh';
+        parent.style.position = 'relative';
+        document.body.appendChild(parent);
+
+        // Create progress bar
+        var progress = document.createElement('progress');
+        progress.id = 'progress';
+        progress.value = 0;
+        progress.max = 120;
+        progress.style.width = '100%';
+        progress.style.display = 'block';
+        parent.appendChild(progress);
+
+        // Create canvas
+        var canvas = document.createElement('canvas');
+        canvas.id = 'canvas';
+        parent.appendChild(canvas);
+
+        var ctx = canvas.getContext("2d", { alpha: false });
+        ctx.imageSmoothingQuality = "low";
+
+        // Set the size of the canvas to match the parent div
+        canvas.width = parent.offsetWidth;
+        canvas.height = parent.offsetHeight;
+        canvas.classList.add('canvas')
+
+        var len = 0;
+
+        function drawTree(startX, startY, len, angle, branchWidth, color1, color2) {
+            ctx.beginPath();
+            ctx.save();
+            ctx.strokeStyle = color1;
+            ctx.fillStyle = color2;
+            ctx.lineWidth = branchWidth;
+            ctx.translate(startX, startY);
+            ctx.rotate(angle * Math.PI/180);
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, -len);
+            ctx.stroke();
+
+            if(len < 10) {
+                ctx.beginPath();
+                ctx.arc(0, -len, 10, 0, Math.PI/2);
+                ctx.fill();
+            } else {
+                drawTree(0, -len, len*0.8, angle+15, Math.max(branchWidth*0.8, 1));
+                drawTree(0, -len, len*0.8, angle-15, Math.max(branchWidth*0.8, 1));
+            }
+
+            ctx.restore();
+        }
+
+        function animate() {
+            // Draw sky
+            ctx.fillStyle = 'skyblue';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw ground
+            ctx.fillStyle = 'saddlebrown';
+            ctx.fillRect(0, canvas.height-80, canvas.width, 80);
+
+            len += .7;
+            var branchWidth = Math.max(len/6, 2); // Set a minimum branch width
+            if (len < 120 && len < canvas.height - 100) { // Stop the tree from growing beyond the canvas
+                drawTree(canvas.width/2, canvas.height-80, len, 0, branchWidth, 'brown', 'green');
+                progress.value = len;
+                requestAnimationFrame(animate);
+            }
+        }
+
+        animate();
+
+        // Resize the canvas when the window is resized
+        window.addEventListener('resize', function() {
+            canvas.width = parent.offsetWidth;
+            canvas.height = parent.offsetHeight;
+            len = 0; // Reset the tree
+            animate();
+        });
+    canvasContainer.appendChild(parent)
+
+
+        console.log(canvasContainer)
+
+
         document.body.appendChild(mainModuleContainer);
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     document.body.appendChild(startButtonContainer);
 })();
